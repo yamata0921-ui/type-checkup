@@ -1,1 +1,1 @@
-# rta-type-checkup
+# type-checkup
