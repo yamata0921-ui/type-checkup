@@ -825,7 +825,87 @@ async function renderSheetCanvas() {
         if (clonedSheet) {
           clonedSheet.style.width = '868px';
           clonedSheet.style.maxWidth = '868px';
+
+          // html2canvas tends to draw text slightly lower than the browser does
+          // (font metrics of Noto Sans JP). Wrap each text node in a span nudged upward.
+          // Adjust EXPORT_TEXT_SHIFT_EM if the image text is still too low / too high.
+          const EXPORT_TEXT_SHIFT_EM = 0.1;
+          const walker = clonedDoc.createTreeWalker(clonedSheet, NodeFilter.SHOW_TEXT);
+          const textNodes = [];
+          while (walker.nextNode()) {
+            const node = walker.currentNode;
+            if (node.nodeValue.trim() && node.parentElement && !node.parentElement.closest('script, style')) {
+              textNodes.push(node);
+            }
+          }
+          textNodes.forEach((node) => {
+            const span = clonedDoc.createElement('span');
+            span.style.position = 'relative';
+            span.style.top = `-${EXPORT_TEXT_SHIFT_EM}em`;
+            node.parentNode.insertBefore(span, node);
+            span.appendChild(node);
+          });
+
+          // html2canvas renders native <input> elements with text shifted downwards.
+          // Replace profile inputs with regular styled div boxes in the clone so text is centered and elevated.
+          clonedDoc.querySelectorAll('.profile-field input').forEach((inputEl) => {
+            const val = inputEl.value.trim() || inputEl.placeholder || '';
+            const isPlaceholder = !inputEl.value.trim();
+            const box = clonedDoc.createElement('div');
+            
+            box.style.display = 'flex';
+            box.style.alignItems = 'center';
+            box.style.fontFamily = 'inherit';
+            box.style.fontSize = '0.92rem';
+            box.style.fontWeight = isPlaceholder ? '400' : '700';
+            box.style.color = isPlaceholder ? 'var(--text-muted)' : 'var(--text-main)';
+            box.style.opacity = isPlaceholder ? '0.65' : '1';
+            box.style.background = 'var(--surface-input)';
+            box.style.border = '1px solid var(--border-strong)';
+            box.style.borderRadius = '7px';
+            box.style.padding = '0 10px';
+            box.style.height = '34px';
+            box.style.boxSizing = 'border-box';
+            box.style.whiteSpace = 'nowrap';
+            box.style.overflow = 'hidden';
+            box.style.textOverflow = 'ellipsis';
+            box.style.lineHeight = '1';
+
+            const innerSpan = clonedDoc.createElement('span');
+            innerSpan.style.position = 'relative';
+            innerSpan.style.top = `-${EXPORT_TEXT_SHIFT_EM}em`;
+            innerSpan.textContent = val;
+            box.appendChild(innerSpan);
+
+            inputEl.parentNode.replaceChild(box, inputEl);
+          });
         }
+
+        // html2canvas draws <input type="range"> values as text (e.g. "50" at the left edge).
+        // Replace each slider in the clone with a plain div thumb at the same position.
+        clonedDoc.querySelectorAll('.range-input').forEach((inputEl) => {
+          const val = Number(inputEl.value);
+          const original = document.getElementById(inputEl.id);
+          const thumbColor = (original && original.style.getPropertyValue('--thumb-color')) || '#4f46e5';
+
+          const thumb = clonedDoc.createElement('div');
+          thumb.style.position = 'absolute';
+          thumb.style.top = '50%';
+          thumb.style.left = `${val}%`;
+          thumb.style.width = '22px';
+          thumb.style.height = '22px';
+          // Matches native thumb travel: left edge = val% * (trackWidth - 22px)
+          thumb.style.marginLeft = `${-22 * (val / 100)}px`;
+          thumb.style.marginTop = '-11px';
+          thumb.style.borderRadius = '50%';
+          thumb.style.background = '#ffffff';
+          thumb.style.border = `4px solid ${thumbColor.trim()}`;
+          thumb.style.boxSizing = 'border-box';
+          thumb.style.boxShadow = '0 2px 6px rgba(15, 23, 42, 0.25)';
+          thumb.style.zIndex = '4';
+
+          inputEl.parentNode.replaceChild(thumb, inputEl);
+        });
       }
     });
   } finally {
