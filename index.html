@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RTA走者タイプ診断シート | Speedrunner Style Checkup</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="bg-decoration"></div>
+
+  <main class="container">
+    <!-- Top Toolbar (Not included in image export) -->
+    <header class="app-toolbar" data-html2canvas-ignore="true">
+      <div class="toolbar-actions">
+        <div class="theme-picker" role="group" aria-label="Theme selection">
+          <span class="theme-picker-label" id="uiThemeLabel">テーマ</span>
+          <button type="button" class="theme-swatch active" data-theme="standard" id="themeBtn-standard"
+            title="スタンダード (Standard)">
+            <span class="swatch-dot swatch-standard"></span>
+          </button>
+          <button type="button" class="theme-swatch" data-theme="mint" id="themeBtn-mint" title="健診ミント (Checkup Mint)">
+            <span class="swatch-dot swatch-mint"></span>
+          </button>
+          <button type="button" class="theme-swatch" data-theme="sakura" id="themeBtn-sakura"
+            title="パステル桜 (Pastel Rose)">
+            <span class="swatch-dot swatch-sakura"></span>
+          </button>
+          <button type="button" class="theme-swatch" data-theme="lavender" id="themeBtn-lavender"
+            title="ドリームラベンダー (Dream Lavender)">
+            <span class="swatch-dot swatch-lavender"></span>
+          </button>
+          <button type="button" class="theme-swatch" data-theme="ocean" id="themeBtn-ocean"
+            title="オーシャンブルー (Ocean Blue)">
+            <span class="swatch-dot swatch-ocean"></span>
+          </button>
+          <button type="button" class="theme-swatch" data-theme="citrus" id="themeBtn-citrus"
+            title="シトラスレモン (Citrus Lemon)">
+            <span class="swatch-dot swatch-citrus"></span>
+          </button>
+          <button type="button" class="theme-swatch" data-theme="amber" id="themeBtn-amber" title="レトロカルテ (Warm Paper)">
+            <span class="swatch-dot swatch-amber"></span>
+          </button>
+          <button type="button" class="theme-swatch" data-theme="dark" id="themeBtn-dark" title="ゲーミングダーク (Cyber Dark)">
+            <span class="swatch-dot swatch-dark"></span>
+          </button>
+          <button type="button" class="theme-swatch" data-theme="midnight" id="themeBtn-midnight"
+            title="ミッドナイトネオン (Midnight Neon)">
+            <span class="swatch-dot swatch-midnight"></span>
+          </button>
+        </div>
+
+        <div class="lang-switch" role="group" aria-label="Language switch">
+          <button type="button" class="lang-btn active" id="btnLangJa" data-lang="ja">日本語</button>
+          <button type="button" class="lang-btn" id="btnLangEn" data-lang="en">English</button>
+        </div>
+        <button type="button" class="btn-secondary" id="btnRandom" title="ランダムに入力して試す">
+          🎲 <span id="uiBtnRandomText">サンプル入力</span>
+        </button>
+        <button type="button" class="btn-secondary" id="btnReset" title="すべて中央(50%)に戻す">
+          ↺ <span id="uiBtnResetText">リセット</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Checkup Sheet Card (Target for Image Capture / Share) -->
+    <section class="checkup-sheet" id="captureArea">
+      <!-- Sheet Header -->
+      <div class="sheet-header">
+        <div class="sheet-title-area">
+          <h1 class="sheet-title" id="uiSheetTitle">RTA走者タイプ診断</h1>
+          <p class="sheet-subtitle" id="uiSheetSubtitle">各検査項目のスライダーを動かして、あなたのRTAプレイスタイル傾向を測定します</p>
+        </div>
+        <div class="sheet-date-box">
+          <span class="date-label" id="uiDateLabel">測定日</span>
+          <span class="date-value" id="currentDateDisplay">2026.10.17</span>
+        </div>
+      </div>
+
+      <!-- Examinee Profile Bar -->
+      <div class="profile-section">
+        <div class="profile-field">
+          <label for="runnerName" id="uiLabelRunnerName">走者名</label>
+          <input type="text" id="runnerName" placeholder="名無しのRTA走者" maxlength="28">
+        </div>
+        <div class="profile-field">
+          <label for="mainGame" id="uiLabelMainGame">主なRTAタイトル・カテゴリ</label>
+          <input type="text" id="mainGame" placeholder="例: スーパーマリオ64 16枚 / Any%" maxlength="60">
+        </div>
+      </div>
+
+      <!-- 6 Sliders Checkup Table -->
+      <div class="checkup-items-wrapper">
+        <div class="sliders-container" id="slidersContainer">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- Comprehensive Diagnosis Result Section (Collapsible, Default Collapsed) -->
+      <details class="diagnosis-accordion" id="diagnosisAccordion">
+        <summary class="diagnosis-summary">
+          <div class="summary-left">
+            <span class="result-badge" id="uiResultBadge">総合所見・走者タイプ判定</span>
+            <span class="summary-hint" id="summaryHintText" data-html2canvas-ignore="true">判定結果を表示</span>
+          </div>
+          <span class="accordion-chevron" data-html2canvas-ignore="true" aria-hidden="true">▼</span>
+        </summary>
+
+        <div class="diagnosis-result-panel">
+          <div class="diagnosis-left">
+            <div class="result-header-row">
+              <span class="type-code-pill" id="typeCodePill">TYPE: BALANCED</span>
+            </div>
+
+            <div class="type-main-display">
+              <div class="type-catch" id="typeCatch">すべての状況に柔軟に適応する</div>
+              <h2 class="type-title" id="typeTitle">オールラウンド・バランサー走者</h2>
+            </div>
+
+            <p class="type-description" id="typeDescription">
+              攻めと安定、感覚と理論のバランスが絶妙にとれた万能タイプです。タイトルやカテゴリの性質に合わせて柔軟にアプローチを切り替えられるため、どんなRTAでも安定した成果を出せるポテンシャルを持っています。
+            </p>
+
+            <div class="type-tags" id="typeTags">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Radar / Balance Visual & Stamp -->
+          <div class="diagnosis-right">
+            <div class="chart-card">
+              <div class="chart-title" id="uiChartTitle">堅実度チャート（小：爆発力型 ／ 大：安定型）</div>
+              <canvas id="balanceCanvas" width="320" height="260"></canvas>
+              <div class="stamp-badge" id="stampBadge">
+                <div class="stamp-inner">
+                  <span class="stamp-top" id="stampTopText">RTA健診</span>
+                  <span class="stamp-main" id="stampMainText">適性◎</span>
+                  <span class="stamp-bottom" id="stampBottomText">認定済</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Sheet Footer -->
+      <footer class="sheet-footer">
+        <span id="uiFooterHashtag">#RTA走者タイプ診断シート</span>
+        <span class="footer-divider">•</span>
+        <span>Speedrunner Style Checkup Sheet</span>
+      </footer>
+    </section>
+
+    <!-- Bottom Export & Share Actions (Ignored on PNG capture) -->
+    <section class="action-bar" data-html2canvas-ignore="true">
+      <button type="button" class="btn-primary btn-download" id="btnDownloadImg">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+        <span id="uiBtnDownloadText">診断シートを画像保存 (PNG)</span>
+      </button>
+
+      <button type="button" class="btn-share-x" id="btnShareX">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg>
+        <span id="uiBtnShareXText">結果をXでポスト</span>
+      </button>
+
+      <button type="button" class="btn-secondary btn-copy-url" id="btnCopyUrl">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </svg>
+        <span id="copyUrlText">診断URLをコピー</span>
+      </button>
+    </section>
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <!-- html2canvas for reliable PNG generation -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
