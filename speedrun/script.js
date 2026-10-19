@@ -129,7 +129,7 @@ const UI_TEXT = {
     chartTitle: '堅実度チャート（小：爆発力型 ／ 大：安定型）',
     stampTop: 'RTA健診',
     stampBottom: '認定済',
-    footerHashtag: '#RTA走者タイプ診断シート',
+    footerHashtag: '#RTA走者タイプ診断',
     btnDownload: '診断シートを画像保存 (PNG)',
     btnDownloading: '画像を作成中...',
     btnShareX: '結果をXでポスト',
@@ -178,7 +178,7 @@ const UI_TEXT = {
     chartTitle: 'Steadiness Chart (Small: Explosive / Large: Consistent)',
     stampTop: 'SPEEDRUN',
     stampBottom: 'CERTIFIED',
-    footerHashtag: '#SpeedrunnerStyleCheckup',
+    footerHashtag: '#RTA走者タイプ診断 #SpeedrunnerStyleCheckup',
     btnDownload: 'Save Checkup Image (PNG)',
     btnDownloading: 'Generating PNG...',
     btnShareX: 'Post Result on X',
@@ -865,6 +865,9 @@ async function renderSheetCanvas() {
             box.style.borderRadius = '7px';
             box.style.padding = '0 10px';
             box.style.height = '34px';
+            box.style.width = '100%';
+            box.style.minWidth = '0';
+            box.style.maxWidth = '100%';
             box.style.boxSizing = 'border-box';
             box.style.whiteSpace = 'nowrap';
             box.style.overflow = 'hidden';
