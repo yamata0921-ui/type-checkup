@@ -70,20 +70,23 @@ body[data-theme="sakura"] {
   --accent-indigo: #db2777;
 }
 
-/* Theme 4: Dream Lavender (ドリームラベンダー) */
-body[data-theme="lavender"] {
-  --bg-page: #f5f3ff;
-  --bg-deco-gradient: linear-gradient(135deg, #ede9fe 0%, #f3e8ff 50%, #e0e7ff 100%);
+/* Theme: Muted Sage (くすみセージ) */
+body[data-theme="sage"] {
+  --bg-page: #f2f5f1;
+  --bg-deco-gradient: linear-gradient(135deg, #d8e2dc 0%, #e8ede6 50%, #dfe7e2 100%);
   --surface-card: #ffffff;
-  --surface-row: #ffffff;
-  --surface-subtle: #faf5ff;
+  --surface-row: #f5f7f3;
+  --surface-subtle: #ebf0ea;
   --surface-input: #ffffff;
-  --border-light: #ddd6fe;
-  --border-strong: #c4b5fd;
-  --top-bar-gradient: linear-gradient(90deg, #a855f7 0%, #8b5cf6 50%, #6366f1 100%);
-  --accordion-bg: linear-gradient(135deg, #f5f3ff 0%, #faf5ff 100%);
-  --track-bg: #ede9fe;
-  --accent-indigo: #7c3aed;
+  --border-light: #cbd5c8;
+  --border-strong: #b0bfac;
+  --top-bar-gradient: linear-gradient(90deg, #84a98c 0%, #52796f 50%, #354f52 100%);
+  --accordion-bg: linear-gradient(135deg, #f5f7f3 0%, #ebf0ea 100%);
+  --track-bg: #dfe5dc;
+  --text-main: #283618;
+  --text-secondary: #475b36;
+  --text-muted: #6f835e;
+  --accent-indigo: #52796f;
 }
 
 /* Theme 5: Ocean Blue (オーシャンブルー) */
@@ -100,22 +103,6 @@ body[data-theme="ocean"] {
   --accordion-bg: linear-gradient(135deg, #f0f9ff 0%, #ecfeff 100%);
   --track-bg: #e0f2fe;
   --accent-indigo: #0284c7;
-}
-
-/* Theme 6: Citrus Lemon (シトラスレモン) */
-body[data-theme="citrus"] {
-  --bg-page: #fefce8;
-  --bg-deco-gradient: linear-gradient(135deg, #fef08a 0%, #fef9c3 50%, #dcfce7 100%);
-  --surface-card: #ffffff;
-  --surface-row: #ffffff;
-  --surface-subtle: #fefce8;
-  --surface-input: #ffffff;
-  --border-light: #fde047;
-  --border-strong: #facc15;
-  --top-bar-gradient: linear-gradient(90deg, #eab308 0%, #84cc16 50%, #10b981 100%);
-  --accordion-bg: linear-gradient(135deg, #fefce8 0%, #f7fee7 100%);
-  --track-bg: #fef08a;
-  --accent-indigo: #ca8a04;
 }
 
 /* Theme 7: Retro Chart / Warm Paper (レトロカルテ) */
@@ -205,6 +192,40 @@ body[data-theme="midnight"] {
   --shadow-card: 0 16px 40px -8px rgba(0, 0, 0, 0.65);
 }
 
+/* Theme 10: Stealth OLED (ステルスOLED) */
+body[data-theme="stealth"] {
+  --bg-page: #000000;
+  --bg-deco-gradient: linear-gradient(135deg, #171717 0%, #0a0a0a 50%, #1f2937 100%);
+  --surface-card: #0a0a0a;
+  --surface-row: #141414;
+  --surface-subtle: #1a1a1a;
+  --surface-input: #050505;
+  --border-light: #262626;
+  --border-strong: #404040;
+  --top-bar-gradient: linear-gradient(90deg, #525252 0%, #a3a3a3 50%, #ffffff 100%);
+  --accordion-bg: linear-gradient(135deg, #141414 0%, #0a0a0a 100%);
+  --track-bg: #262626;
+
+  --text-main: #ffffff;
+  --text-secondary: #e5e5e5;
+  --text-muted: #a3a3a3;
+
+  --left-primary: #fb923c;
+  --left-soft: rgba(249, 115, 22, 0.18);
+  --left-border: rgba(251, 146, 60, 0.45);
+  --left-text: #fdba74;
+
+  --right-primary: #38bdf8;
+  --right-soft: rgba(56, 189, 248, 0.18);
+  --right-border: rgba(56, 189, 248, 0.45);
+  --right-text: #7dd3fc;
+
+  --accent-indigo: #38bdf8;
+  --stamp-color: #f87171;
+  --stamp-bg: transparent;
+  --shadow-card: 0 16px 40px -8px rgba(0, 0, 0, 0.85);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -260,9 +281,14 @@ body {
 }
 
 body[data-theme="dark"] .app-toolbar,
-body[data-theme="midnight"] .app-toolbar {
+body[data-theme="midnight"] .app-toolbar,
+body[data-theme="stealth"] .app-toolbar {
   background: rgba(30, 41, 59, 0.88);
   border-color: var(--border-light);
+}
+
+body[data-theme="stealth"] .app-toolbar {
+  background: rgba(15, 15, 15, 0.92);
 }
 
 .toolbar-actions {
@@ -336,16 +362,12 @@ body[data-theme="midnight"] .app-toolbar {
   background: linear-gradient(135deg, #ec4899 50%, #fff1f2 50%);
 }
 
-.swatch-lavender {
-  background: linear-gradient(135deg, #8b5cf6 50%, #f5f3ff 50%);
+.swatch-sage {
+  background: linear-gradient(135deg, #52796f 50%, #d8e2dc 50%);
 }
 
 .swatch-ocean {
   background: linear-gradient(135deg, #0284c7 50%, #e0f2fe 50%);
-}
-
-.swatch-citrus {
-  background: linear-gradient(135deg, #eab308 50%, #fef9c3 50%);
 }
 
 .swatch-amber {
@@ -358,6 +380,10 @@ body[data-theme="midnight"] .app-toolbar {
 
 .swatch-midnight {
   background: linear-gradient(135deg, #1a102a 50%, #e879f9 50%);
+}
+
+.swatch-stealth {
+  background: linear-gradient(135deg, #050505 50%, #e5e5e5 50%);
 }
 
 /* Language Switch */
@@ -926,9 +952,9 @@ body[data-theme="midnight"] .app-toolbar {
 /* Comprehensive Diagnosis Result Panel */
 .diagnosis-result-panel {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 22px;
-  padding: 18px 22px 20px;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 18px;
+  padding: 18px 20px 20px;
   align-items: stretch;
 }
 
@@ -941,7 +967,17 @@ body[data-theme="midnight"] .app-toolbar {
   margin-top: auto;
   padding-top: 16px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.share-pc-hint {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  line-height: 1.4;
+  letter-spacing: 0.01em;
 }
 
 .result-header-row {
@@ -1020,8 +1056,8 @@ body[data-theme="midnight"] .app-toolbar {
   background: var(--surface-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
-  padding: 12px 16px 46px;
-  min-height: 332px;
+  padding: 10px 12px 36px;
+  min-height: 308px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -1031,27 +1067,27 @@ body[data-theme="midnight"] .app-toolbar {
 }
 
 .chart-title {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 800;
   color: var(--text-muted);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   letter-spacing: 0.04em;
   align-self: center;
   text-align: center;
 }
 
 #balanceCanvas {
-  margin-left: -6px;
-  margin-top: 4px;
+  margin-left: -4px;
+  margin-top: 2px;
 }
 
 /* Hanko / Medical Stamp style (Enlarged, Bottom-Right) */
 .stamp-badge {
   position: absolute;
-  bottom: 12px;
-  right: 14px;
-  width: 112px;
-  height: 112px;
+  bottom: 10px;
+  right: 10px;
+  width: 102px;
+  height: 102px;
   border: 3.5px solid var(--stamp-color);
   border-radius: 50%;
   color: var(--stamp-color);
@@ -1085,14 +1121,14 @@ body[data-theme="midnight"] .app-toolbar {
 .stamp-main {
   width: 96%;
   display: block;
-  font-size: 1.2rem;
+  font-size: 1.12rem;
   font-weight: 900;
   line-height: 1.2;
   white-space: nowrap;
   border-top: 2px solid var(--stamp-color);
   border-bottom: 2px solid var(--stamp-color);
-  padding: 4px 4px;
-  margin: 4px 0;
+  padding: 3px 2px;
+  margin: 3px 0;
 }
 
 /* Sheet Footer */
@@ -1372,6 +1408,10 @@ body[data-theme="midnight"] .app-toolbar {
   .diagnosis-share-area .btn-share-x {
     width: 100%;
     justify-content: center;
+  }
+
+  .share-pc-hint {
+    display: none !important;
   }
 
   .chart-card {

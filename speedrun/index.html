@@ -48,17 +48,13 @@
             title="パステル桜 (Pastel Rose)">
             <span class="swatch-dot swatch-sakura"></span>
           </button>
-          <button type="button" class="theme-swatch" data-theme="lavender" id="themeBtn-lavender"
-            title="ドリームラベンダー (Dream Lavender)">
-            <span class="swatch-dot swatch-lavender"></span>
+          <button type="button" class="theme-swatch" data-theme="sage" id="themeBtn-sage"
+            title="くすみセージ (Muted Sage)">
+            <span class="swatch-dot swatch-sage"></span>
           </button>
           <button type="button" class="theme-swatch" data-theme="ocean" id="themeBtn-ocean"
             title="オーシャンブルー (Ocean Blue)">
             <span class="swatch-dot swatch-ocean"></span>
-          </button>
-          <button type="button" class="theme-swatch" data-theme="citrus" id="themeBtn-citrus"
-            title="シトラスレモン (Citrus Lemon)">
-            <span class="swatch-dot swatch-citrus"></span>
           </button>
           <button type="button" class="theme-swatch" data-theme="amber" id="themeBtn-amber" title="レトロカルテ (Warm Paper)">
             <span class="swatch-dot swatch-amber"></span>
@@ -69,6 +65,10 @@
           <button type="button" class="theme-swatch" data-theme="midnight" id="themeBtn-midnight"
             title="ミッドナイトネオン (Midnight Neon)">
             <span class="swatch-dot swatch-midnight"></span>
+          </button>
+          <button type="button" class="theme-swatch" data-theme="stealth" id="themeBtn-stealth"
+            title="ステルスOLED (Stealth OLED)">
+            <span class="swatch-dot swatch-stealth"></span>
           </button>
         </div>
 
@@ -155,6 +155,7 @@
                 </svg>
                 <span id="uiBtnShareXText">結果をXでポスト</span>
               </button>
+              <span class="share-pc-hint" id="uiSharePcHint" data-html2canvas-ignore="true">※クリップボードに画像がコピーされます（投稿時にCtrl+V）</span>
             </div>
           </div>
 
@@ -162,7 +163,7 @@
           <div class="diagnosis-right">
             <div class="chart-card">
               <div class="chart-title" id="uiChartTitle">堅実度チャート（小：爆発力型 ／ 大：安定型）</div>
-              <canvas id="balanceCanvas" width="320" height="260"></canvas>
+              <canvas id="balanceCanvas" width="304" height="246"></canvas>
               <div class="stamp-badge" id="stampBadge">
                 <div class="stamp-inner">
                   <span class="stamp-top" id="stampTopText">RTA健診</span>

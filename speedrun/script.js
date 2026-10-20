@@ -38,16 +38,16 @@ const THEMES = {
     polyFill: 'rgba(219, 39, 119, 0.16)',
     polyStroke: '#db2777'
   },
-  lavender: {
-    ja: 'ドリームラベンダー',
-    en: 'Dream Lavender',
+  sage: {
+    ja: 'くすみセージ',
+    en: 'Muted Sage',
     cardBg: '#ffffff',
-    gridLine: '#ede9fe',
-    axisLine: '#ddd6fe',
-    midLine: '#c4b5fd',
-    labelColor: '#4c1d95',
-    polyFill: 'rgba(124, 58, 237, 0.18)',
-    polyStroke: '#7c3aed'
+    gridLine: '#cbd5c8',
+    axisLine: '#b0bfac',
+    midLine: '#52796f',
+    labelColor: '#475b36',
+    polyFill: 'rgba(82, 121, 111, 0.22)',
+    polyStroke: '#52796f'
   },
   ocean: {
     ja: 'オーシャンブルー',
@@ -59,17 +59,6 @@ const THEMES = {
     labelColor: '#0c4a6e',
     polyFill: 'rgba(2, 132, 199, 0.18)',
     polyStroke: '#0284c7'
-  },
-  citrus: {
-    ja: 'シトラスレモン',
-    en: 'Citrus Lemon',
-    cardBg: '#ffffff',
-    gridLine: '#fef08a',
-    axisLine: '#fde047',
-    midLine: '#facc15',
-    labelColor: '#713f12',
-    polyFill: 'rgba(202, 138, 4, 0.18)',
-    polyStroke: '#ca8a04'
   },
   amber: {
     ja: 'レトロカルテ',
@@ -103,6 +92,17 @@ const THEMES = {
     labelColor: '#e9d5ff',
     polyFill: 'rgba(232, 121, 249, 0.25)',
     polyStroke: '#e879f9'
+  },
+  stealth: {
+    ja: 'ステルスOLED',
+    en: 'Stealth OLED',
+    cardBg: '#0a0a0a',
+    gridLine: '#262626',
+    axisLine: '#404040',
+    midLine: '#737373',
+    labelColor: '#e5e5e5',
+    polyFill: 'rgba(255, 255, 255, 0.22)',
+    polyStroke: '#ffffff'
   }
 };
 
@@ -133,6 +133,7 @@ const UI_TEXT = {
     btnDownload: '診断シートを画像保存 (PNG)',
     btnDownloading: '画像を作成中...',
     btnShareX: '結果をXでポスト',
+    sharePcHint: '※クリップボードに画像がコピーされます（投稿時にCtrl+V）',
     btnCopyUrl: '診断URLをコピー',
     poleLeftTitle: 'クリックで10%左へ移動',
     poleRightTitle: 'クリックで10%右へ移動',
@@ -182,6 +183,7 @@ const UI_TEXT = {
     btnDownload: 'Save Checkup Image (PNG)',
     btnDownloading: 'Generating PNG...',
     btnShareX: 'Post Result on X',
+    sharePcHint: '* Checkup image will be copied to clipboard (Ctrl+V to paste)',
     btnCopyUrl: 'Copy Share URL',
     poleLeftTitle: 'Click to move 10% left',
     poleRightTitle: 'Click to move 10% right',
@@ -328,6 +330,10 @@ function applyLanguageTexts() {
 
   document.getElementById('uiBtnDownloadText').textContent = t.btnDownload;
   document.getElementById('uiBtnShareXText').textContent = t.btnShareX;
+  const pcHintEl = document.getElementById('uiSharePcHint');
+  if (pcHintEl && t.sharePcHint) {
+    pcHintEl.textContent = t.sharePcHint;
+  }
   document.getElementById('copyUrlText').textContent = t.btnCopyUrl;
 }
 
@@ -563,8 +569,8 @@ function drawBalanceChart(v) {
   if (!balanceCanvas) return;
   const ctx = balanceCanvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
-  const cssW = 340;
-  const cssH = 256;
+  const cssW = 304;
+  const cssH = 246;
 
   if (balanceCanvas.width !== cssW * dpr || balanceCanvas.height !== cssH * dpr) {
     balanceCanvas.width = cssW * dpr;
@@ -579,9 +585,9 @@ function drawBalanceChart(v) {
   ctx.scale(dpr, dpr);
   ctx.clearRect(0, 0, cssW, cssH);
 
-  const cx = 146;
-  const cy = 126;
-  const maxR = 88;
+  const cx = 138;
+  const cy = 118;
+  const maxR = 78;
   const count = CHECKUP_ITEMS.length;
 
   // Background concentric polygons
@@ -635,8 +641,8 @@ function drawBalanceChart(v) {
     ctx.lineTo(x, y);
     ctx.stroke();
 
-    const lx = cx + Math.cos(angle) * (maxR + 28);
-    const ly = cy + Math.sin(angle) * (maxR + 18);
+    const lx = cx + Math.cos(angle) * (maxR + 25);
+    const ly = cy + Math.sin(angle) * (maxR + 15);
     ctx.fillText(CHECKUP_ITEMS[i][state.lang].axisLabel, lx, ly);
   }
 
@@ -689,8 +695,8 @@ function fitStampText(text) {
   if (!stampMainText) return;
   stampMainText.textContent = text;
 
-  const maxSafeWidth = 88; // Safe inner chord width (px) inside the 112px circular stamp
-  let fontSize = 22;
+  const maxSafeWidth = 80; // Safe inner chord width (px) inside the 102px circular stamp
+  let fontSize = 20;
   const minFontSize = 9;
 
   if (stampMeasureCtx) {
