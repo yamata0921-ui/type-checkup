@@ -1202,6 +1202,27 @@ body[data-theme="stealth"] .app-toolbar {
   border-radius: 12px;
 }
 
+/* Page Footer / Creator Credit */
+.page-credit {
+  margin-top: 26px;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.page-credit a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+
+.page-credit a:hover {
+  color: var(--accent-indigo);
+}
+
 /* Toast Notification */
 .toast {
   position: fixed;
@@ -1448,6 +1469,11 @@ body[data-theme="stealth"] .app-toolbar {
   .action-bar button {
     width: 100%;
     justify-content: center;
+  }
+
+  .page-credit {
+    margin-top: 20px;
+    font-size: 0.76rem;
   }
 
   .toast {

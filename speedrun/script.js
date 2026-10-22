@@ -135,6 +135,7 @@ const UI_TEXT = {
     btnShareX: '結果をXでポスト',
     sharePcHint: '※クリップボードに画像がコピーされます（投稿時にCtrl+V）',
     btnCopyUrl: '診断URLをコピー',
+    pageCredit: '制作：ヤマた <a href="https://x.com/Yamata0921" target="_blank" rel="noopener noreferrer">@Yamata0921</a>',
     poleLeftTitle: 'クリックで10%左へ移動',
     poleRightTitle: 'クリックで10%右へ移動',
     hybridLabel: 'バランス派・ハイブリッド',
@@ -154,7 +155,7 @@ const UI_TEXT = {
     shareHeaderWithName: (name) => `${name}さんのRTA走者タイプ診断結果`,
     shareHeaderAnon: '私のRTA走者タイプ診断結果',
     shareGame: (game) => `（主なRTA: ${game}）`,
-    shareTypeBody: (title, code, catchCopy) => `診断タイプ：【${title}】\n〜${catchCopy}〜`,
+    shareTypeBody: (title, code, catchCopy) => `【${title}】\n〜${catchCopy}〜`,
     filePrefix: 'RTA走者タイプ診断'
   },
   en: {
@@ -185,6 +186,7 @@ const UI_TEXT = {
     btnShareX: 'Post Result on X',
     sharePcHint: '* Checkup image will be copied to clipboard (Ctrl+V to paste)',
     btnCopyUrl: 'Copy Share URL',
+    pageCredit: 'Created by: ヤマた <a href="https://x.com/Yamata0921" target="_blank" rel="noopener noreferrer">@Yamata0921</a>',
     poleLeftTitle: 'Click to move 10% left',
     poleRightTitle: 'Click to move 10% right',
     hybridLabel: 'Balanced / Hybrid',
@@ -204,7 +206,7 @@ const UI_TEXT = {
     shareHeaderWithName: (name) => `${name}'s Speedrunner Style Checkup`,
     shareHeaderAnon: 'My Speedrunner Style Checkup Result',
     shareGame: (game) => ` (Main Speedrun: ${game})`,
-    shareTypeBody: (title, code, catchCopy) => `Type: [${title}]\n"${catchCopy}"`,
+    shareTypeBody: (title, code, catchCopy) => `[${title}]\n"${catchCopy}"`,
     filePrefix: 'Speedrunner_Checkup'
   }
 };
@@ -335,6 +337,10 @@ function applyLanguageTexts() {
     pcHintEl.textContent = t.sharePcHint;
   }
   document.getElementById('copyUrlText').textContent = t.btnCopyUrl;
+  const creditEl = document.getElementById('uiPageCredit');
+  if (creditEl && t.pageCredit) {
+    creditEl.innerHTML = t.pageCredit;
+  }
 }
 
 // Render the Checkup Sliders with Pattern A Category Section Headers
@@ -854,18 +860,17 @@ async function renderSheetCanvas() {
 
           // html2canvas renders native <input> elements with text shifted downwards.
           // Replace profile inputs with regular styled div boxes in the clone so text is centered and elevated.
+          // If the input was left blank, output an empty box with no placeholder text.
           clonedDoc.querySelectorAll('.profile-field input').forEach((inputEl) => {
-            const val = inputEl.value.trim() || inputEl.placeholder || '';
-            const isPlaceholder = !inputEl.value.trim();
+            const val = inputEl.value.trim();
             const box = clonedDoc.createElement('div');
             
             box.style.display = 'flex';
             box.style.alignItems = 'center';
             box.style.fontFamily = 'inherit';
             box.style.fontSize = '0.92rem';
-            box.style.fontWeight = isPlaceholder ? '400' : '700';
-            box.style.color = isPlaceholder ? 'var(--text-muted)' : 'var(--text-main)';
-            box.style.opacity = isPlaceholder ? '0.65' : '1';
+            box.style.fontWeight = '700';
+            box.style.color = 'var(--text-main)';
             box.style.background = 'var(--surface-input)';
             box.style.border = '1px solid var(--border-strong)';
             box.style.borderRadius = '7px';
@@ -880,11 +885,13 @@ async function renderSheetCanvas() {
             box.style.textOverflow = 'ellipsis';
             box.style.lineHeight = '1';
 
-            const innerSpan = clonedDoc.createElement('span');
-            innerSpan.style.position = 'relative';
-            innerSpan.style.top = `-${EXPORT_TEXT_SHIFT_EM}em`;
-            innerSpan.textContent = val;
-            box.appendChild(innerSpan);
+            if (val) {
+              const innerSpan = clonedDoc.createElement('span');
+              innerSpan.style.position = 'relative';
+              innerSpan.style.top = `-${EXPORT_TEXT_SHIFT_EM}em`;
+              innerSpan.textContent = val;
+              box.appendChild(innerSpan);
+            }
 
             inputEl.parentNode.replaceChild(box, inputEl);
           });
@@ -1023,7 +1030,11 @@ function initEvents() {
     const typeBody = t.shareTypeBody(diag.title, diag.code, diag.catch);
 
     const text = `${headerLine}${gameLine}\n${typeBody}\n\n${t.footerHashtag}`;
-    const shareUrl = window.location.href.startsWith('http') ? window.location.href : '';
+    // Base URL without parameters so viewers start fresh from the default reset state
+    const cleanUrl = (window.location.origin && window.location.pathname)
+      ? `${window.location.origin}${window.location.pathname}`
+      : window.location.href.split('?')[0].split('#')[0];
+    const shareUrl = window.location.protocol.startsWith('http') ? cleanUrl : '';
 
     const intentUrl = new URL('https://twitter.com/intent/tweet');
     intentUrl.searchParams.set('text', text);
